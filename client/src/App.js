@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react'
-// import io from 'socket.io-client'
 import { sendInfo } from "./socketClient";
+import Nav from './Component/Nav'
+import UserList from './Component/UserList';
 const App = () => {
 
   const socket=useRef(null)
@@ -9,7 +10,10 @@ const App = () => {
   })
   return (
     <div>
-        <h4>Video Chat</h4>
+      <Nav/>
+      <div className="mt-5 col-md-4 offset-md-4">
+        <UserList/>
+      </div>
     </div>
   )
 }
