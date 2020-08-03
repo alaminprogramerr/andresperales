@@ -13,6 +13,9 @@ import CardContent from '@material-ui/core/CardContent';
 import FaceIcon from '@material-ui/icons/Face';
 import CallModel from './CallModal';
 
+import {useRecoilValue} from 'recoil'
+import {allUser,myID} from '../recoilState'
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
@@ -21,9 +24,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function UserList() {
+export default function UserList({callFunction,stream,myVideo}) {
   const classes = useStyles();
   const [checked, setChecked] = React.useState([0]);
+  const getAllUser=useRecoilValue(allUser)
+  const getMyID=useRecoilValue(myID)
+
 
   const handleToggle = (value) => () => {
     const currentIndex = checked.indexOf(value);
@@ -40,25 +46,29 @@ export default function UserList() {
 
   return (
     <List className={classes.root}>
-      {[0, 1, 2, 3].map((value) => {
+      {Object.keys(getAllUser).map((value) => {
         const labelId = `checkbox-list-label-${value}`;
 
         return (
-            <Card>
-                <CardContent>
-                    <ListItem key={value} role={undefined} dense button onClick={handleToggle(value)}>
-                        <ListItemIcon>
-                            <FaceIcon/>
-                        </ListItemIcon>
-                        <ListItemText id={labelId} primary={`Line item ${value + 1}`} />
-                        <ListItemSecondaryAction>
-                        <IconButton edge="end" aria-label="comments">
-                            <CallModel/>
-                        </IconButton>
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                </CardContent>
-            </Card>
+          <div>
+              {
+                value===getMyID?'':
+              <Card>
+                    <CardContent>
+                        <ListItem key={value} role={undefined} dense button onClick={handleToggle(value)}>
+                            <ListItemIcon>
+                                <FaceIcon/>
+                            </ListItemIcon>
+                            <ListItemText id={labelId} primary={`ID : ${value + 1}`} />
+                            <ListItemSecondaryAction>
+                            <IconButton onClick={()=>callFunction(value)} edge="end" aria-label="comments">
+                                <CallModel />
+                            </IconButton>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                    </CardContent>
+                </Card>}
+          </div>
         );
       })}
     </List>

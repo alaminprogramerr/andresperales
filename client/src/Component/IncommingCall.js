@@ -17,10 +17,8 @@ import VideoCallIcon from '@material-ui/icons/VideoCall';
 import { Card } from '@material-ui/core';
 import './style.css'
 
-
-import {useRecoilState} from 'recoil'
-import{callModal} from '../recoilState'
-
+import  {useRecoilState} from 'recoil'
+import {callReciveModal} from '../recoilState'
 const useStyles = makeStyles((theme) => ({
   appBar: {
     position: 'relative',
@@ -35,29 +33,29 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function CallModel() {
+export default function IncommingCALL({id,acceptFunction}) {
+  
   const classes = useStyles();
-  const [getCallModal,setCallModal]=useRecoilState(callModal)
-
+  const [getCallReciveModal, setCallReciveModal] = useRecoilState(callReciveModal);
 
   const handleModal = () => {
-    setCallModal(true);
+    setCallReciveModal(!getCallReciveModal);
   };
 
 
   return (
     <div>
-      <div  onClick={handleModal}>
-        <VideoCallIcon />
+      <div style={{display:'none'}} onClick={()=>handleModal()}>
+        <VideoCallIcon/>
       </div>
-      <Dialog fullScreen open={getCallModal} onClose={handleModal} TransitionComponent={Transition}>
+      <Dialog fullScreen open={getCallReciveModal} onClose={()=>handleModal()} TransitionComponent={Transition}>
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton edge="start" color="inherit" onClick={handleModal} aria-label="close">
+            <IconButton edge="start" color="inherit" onClick={()=>handleModal()} aria-label="close">
               <CloseIcon />
             </IconButton>
             <Typography variant="h6" className={classes.title}>
-              Calling ...
+              <strong>Incomming Call From : </strong> {id}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -70,7 +68,7 @@ export default function CallModel() {
                         </div>
                     </div>
                     <ListItem >
-                        <strong>Calling to Mahmud ...</strong> <div onClick={()=>{setCallModal(!getCallModal)}} style={{width:'40px',height:'40px',borderRadius:'50%',cursor:'pointer',backgroundColor:'red',textAlign:'center',marginLeft:'30px',position:'relative'}}> <CallEndIcon style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%, -50%)'}}/></div>
+                        <strong> Incomming Call  ... </strong> <div onClick={()=>{acceptFunction()}} style={{width:'40px',height:'40px',borderRadius:'50%',cursor:'pointer',backgroundColor:'green',textAlign:'center',marginLeft:'30px',position:'relative'}}> <CallEndIcon style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%, -50%)'}}/></div>
                     </ListItem>
                 </Card>
             </div>

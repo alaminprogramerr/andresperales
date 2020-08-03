@@ -7,6 +7,11 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
+
+import {useRecoilValue} from 'recoil'
+import {myID} from '../recoilState'
+
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -19,7 +24,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
 export default function ButtonAppBar() {
+  const getMyID=useRecoilValue(myID)
   const classes = useStyles();
 
   return (
@@ -32,6 +40,7 @@ export default function ButtonAppBar() {
           <Typography variant="h6" className={classes.title}>
             Video Calling App
           </Typography>
+          <Button color="inherit"><strong>My ID : </strong> {getMyID} </Button>
         </Toolbar>
       </AppBar>
     </div>
